@@ -1,0 +1,35 @@
+h1 {
+  color: white;
+}
+
+.custom-footer {
+  background-color: #001529 !important; 
+
+}
+
+
+
+.footer {
+  background-color: #001529; /* Светлый фон */
+
+}
+
+.footer-title {
+  margin: 0;
+  font-size: 24px; /* Размер заголовка */
+  font-weight: bold; /* Жирный шрифт */
+}
+
+.footer-text {
+  display: block; /* Блочный элемент для корректного отображения */
+}
+
+.footer-icon {
+  font-size: 30px; /* Размер иконок */
+  color: #ffff; /* Цвет иконок */
+  transition: color 0.3s; /* Плавный переход цвета */
+}
+
+.footer-icon:hover {
+  color: #40a9ff; /* Изменяем цвет при наведении */
+}
