@@ -4,13 +4,13 @@ import Modal from 'antd/es/modal/Modal';
 import { Carousel } from 'antd';
 
 const locations = {
-    'cafe': {
+    'bridge': {
         position: [51.6683, 94.4650],
         description: 'Описание Моста',
         imageUrl: 'img/photo1.jpg', 
         name: 'Мост'
     },
-    'museum': {
+    'temple': {
         position: [51.6450, 94.4700], 
         description: 'Описание Храма',
         imageUrl: 'img/photo2.jpg', 
