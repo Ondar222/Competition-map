@@ -1,17 +1,20 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from 'antd/es/modal/Modal';
+import { Carousel } from 'antd';
 
 const locations = {
     'cafe': {
         position: [51.6683, 94.4650],
-        description: 'Место Моста',
+        description: 'Описание Моста',
         imageUrl: 'img/photo1.jpg', 
+        name: 'Мост'
     },
     'museum': {
         position: [51.6450, 94.4700], 
-        description: 'Место Храма',
+        description: 'Описание Храма',
         imageUrl: 'img/photo2.jpg', 
+        name: 'Храм'
     },
 };
 
@@ -22,15 +25,40 @@ interface ModalComponentProps {
 }
 
 const ModalComponent: React.FC<ModalComponentProps> = ({ activeLocation, isModalVisible, handleModalClose }) => {
+    const [selectedLocation, setSelectedLocation] = useState<any>(null);
+
+    useEffect(() => {
+        if (activeLocation) {
+            setSelectedLocation(locations[activeLocation]);
+        } else {
+            setSelectedLocation(null);
+        }
+    }, [activeLocation]);
+
     return (
         <Modal
-            title={activeLocation ? locations[activeLocation].description : ''}
             visible={isModalVisible}
-            onCancel={handleModalClose}
             footer={null}
+            onCancel={handleModalClose}
+            centered
+            width={500}
         >
-            {activeLocation && (
-                <img src={locations[activeLocation].imageUrl} alt={locations[activeLocation].description} style={{ width: '100%', height: 'auto' }} />
+            {selectedLocation && (
+              <>
+                <h3>{selectedLocation.name}</h3>
+                <Carousel arrows infinite={false}>
+                  <div>
+                    <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+                  </div>
+                  <div>
+                    <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+                  </div>
+                  <div>
+                    <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+                  </div>
+                </Carousel>
+                <p>{selectedLocation.description}</p>
+              </>
             )}
         </Modal>
     );

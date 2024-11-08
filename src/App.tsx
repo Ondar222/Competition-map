@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import MapComponent from './components/Map/MapComponent';
-import HeaderComponent from './components/Header/HeaderComponent';
+import { HeaderComponent } from './components/Header/HeaderComponent';
 import FooterComponent from './components/Footer/FooterComponent';
 import './index.css'
 
