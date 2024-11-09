@@ -1,49 +1,72 @@
 import React, { useState, useEffect } from 'react';
+import { Col, Input, Button, Modal, Carousel } from 'antd';
+import { SearchOutlined, AimOutlined } from '@ant-design/icons';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Button, Input, Col } from 'antd';
-import { AimOutlined, SearchOutlined } from '@ant-design/icons';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import ModalComponent from '../Modal/ModalComponent';
 
 const locations = {
-  'bridge': { position: [51.6683, 94.4650], description: 'Место Моста', imageUrl: 'img/photo1.jpg', name: 'Кафе' },
-  'temple': { position: [51.6450, 94.4700], description: 'Место Храма', imageUrl: 'img/photo2.jpg', name: 'Музей' },
+  'bridge': {
+    position: [51.6683, 94.4650],
+    description: 'Описание Моста',
+    imageUrl: 'img/photo1.jpg',
+    name: 'Мост'
+  },
+  'temple': {
+    position: [51.6450, 94.4700],
+    description: 'Описание Храма',
+    imageUrl: 'img/photo2.jpg',
+    name: 'Храм'
+  },
 };
-const kyzylCenter: [number, number] = [51.747, 94.467];
 
-const MapComponent: React.FC = () => {
-  const [activeLocation, setActiveLocation] = useState<string | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentPosition, setCurrentPosition] = useState<[number, number] | null>(null);
-  const [mapCenter, setMapCenter] = useState(kyzylCenter);
-  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleLocateUser = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userCoordinates: [number, number] = [
-            position.coords.latitude,
-            position.coords.longitude,
-          ];
-          setCurrentPosition(userCoordinates);
-          setMapCenter(userCoordinates); // Обновляем центр карты на текущее местоположение
-        },
-        (error) => {
-          console.error('Ошибка получения местоположения:', error);
-          alert('Не удалось получить ваше местоположение.');
-        }
-      );
-    } else {
-      alert('Geolocation не поддерживается вашим браузером.');
-    }
-  };
+const ModalComponent = ({ activeLocation, isModalVisible, handleModalClose }) => {
+  const [selectedLocation, setSelectedLocation] = useState<any>(null);
 
   useEffect(() => {
+    if (activeLocation) {
+      setSelectedLocation(locations[activeLocation]);
+    } else {
+      setSelectedLocation(null);
+    }
+  }, [activeLocation]);
 
-    handleLocateUser();
-  }, []);
+  return (
+    <Modal
+      visible={isModalVisible}
+      footer={null}
+      onCancel={handleModalClose}
+      centered
+      width={500}
+    >
+      {selectedLocation && (
+        <>
+          <h3>{selectedLocation.name}</h3>
+          <Carousel arrows infinite={false}>
+            <div>
+              <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+            </div>
+            <div>
+              <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+            </div>
+            <div>
+              <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+            </div>
+          </Carousel>
+          <p>{selectedLocation.description}</p>
+        </>
+      )}
+    </Modal>
+  );
+};
+
+const MapComponent = () => {
+  const [mapCenter, setMapCenter] = useState([51.6683, 94.4650]); 
+  const [activeLocation, setActiveLocation] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleMarkerClick = (key: string) => {
     setActiveLocation(key);
@@ -55,52 +78,53 @@ const MapComponent: React.FC = () => {
     setActiveLocation(null);
   };
 
-  const handleSearch = (locationName: string) => {
-    const trimmedInput = locationName.trim();
-    const isCoordinateSearch = trimmedInput.split(',').length === 2;
-
-    if (isCoordinateSearch) {
-      const coords = trimmedInput.split(',').map(coord => parseFloat(coord.trim()));
-      const foundLocation = Object.entries(locations).find(([key, { position }]) =>
-        position[0] === coords[0] && position[1] === coords[1]
+  const handleLocateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentPosition([position.coords.latitude, position.coords.longitude]);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
       );
-
-      if (foundLocation) {
-        setCurrentPosition(foundLocation[1].position);
-        setMapCenter(foundLocation[1].position); // Обновляем центр карты
-      } else {
-        alert('Координаты не найдены');
-      }
     } else {
-      const locationKey = trimmedInput.toLowerCase() as keyof typeof locations;
-      const location = locations[locationKey];
-      if (location) {
-        setCurrentPosition(location.position);
-        setMapCenter(location.position); // Обновляем центр карты
-      } else {
-        alert('Место не найдено');
-      }
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  const handleSearch = () => {
+    const foundLocation = Object.values(locations).find(
+      location => location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      location.position.join(',').includes(searchQuery)
+    );
+
+    if (foundLocation) {
+      setActiveLocation(Object.keys(locations).find(key => locations[key] === foundLocation)!);
+      setIsModalVisible(true);
+    } else {
+      
+      console.log('Местоположение не найдено');
     }
   };
 
   return (
     <div>
-      <Col span={6} style={{float: 'right'}}
-      >
-       <Input
-            placeholder="Поиск по названию места..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onPressEnter={handleSearch}
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              zIndex: 1000,
-              width: 300,
-            }}
-            prefix={<SearchOutlined />} // Иконка поиска
-          />
+      <Col span={6} style={{ float: 'right' }}>
+        <Input
+          placeholder="Поиск по названию места..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onPressEnter={handleSearch}
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 1000,
+            width: 300,
+          }}
+          prefix={<SearchOutlined />} 
+        />
       </Col>
       <MapContainer center={mapCenter} zoom={11} style={{ height: '600px', width: '100%' }}>
         <TileLayer
