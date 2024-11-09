@@ -104,7 +104,7 @@ const MapComponent = () => {
       setIsModalVisible(true);
     } else {
       
-      console.log('Местоположение не найдено');
+      alert('Местоположение не найдено');
     }
   };
 
