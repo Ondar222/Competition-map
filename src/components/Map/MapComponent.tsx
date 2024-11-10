@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Input, Button, Modal, Carousel } from 'antd';
+import { Col, Input, Button, Modal, Carousel, Image } from 'antd';
 import { SearchOutlined, AimOutlined } from '@ant-design/icons';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -8,14 +8,14 @@ import L from 'leaflet';
 const locations = {
   'bridge': {
     position: [51.6683, 94.4650],
-    description: 'Описание Моста',
-    imageUrl: 'img/photo1.jpg',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    imageUrl: 'img/photo1.jpg', 
     name: 'Мост'
   },
   'temple': {
     position: [51.6450, 94.4700],
-    description: 'Описание Храма',
-    imageUrl: 'img/photo2.jpg',
+    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?',
+    imageUrl: 'img/photo2.jpg', 
     name: 'Храм'
   },
 };
@@ -45,13 +45,13 @@ const ModalComponent = ({ activeLocation, isModalVisible, handleModalClose }) =>
           <h3>{selectedLocation.name}</h3>
           <Carousel arrows infinite={false}>
             <div>
-              <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+              <Image src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
             </div>
             <div>
-              <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+              <Image src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
             </div>
             <div>
-              <img src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+              <Image src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
             </div>
           </Carousel>
           <p>{selectedLocation.description}</p>
@@ -62,7 +62,7 @@ const ModalComponent = ({ activeLocation, isModalVisible, handleModalClose }) =>
 };
 
 const MapComponent = () => {
-  const [mapCenter, setMapCenter] = useState([51.6683, 94.4650]); 
+  const [mapCenter, setMapCenter] = useState([51.6683, 94.4650]);
   const [activeLocation, setActiveLocation] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPosition, setCurrentPosition] = useState<any>(null);
@@ -96,14 +96,13 @@ const MapComponent = () => {
   const handleSearch = () => {
     const foundLocation = Object.values(locations).find(
       location => location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.position.join(',').includes(searchQuery)
+        location.position.join(',').includes(searchQuery)
     );
 
     if (foundLocation) {
       setActiveLocation(Object.keys(locations).find(key => locations[key] === foundLocation)!);
       setIsModalVisible(true);
     } else {
-      
       alert('Местоположение не найдено');
     }
   };
@@ -123,7 +122,7 @@ const MapComponent = () => {
             zIndex: 1000,
             width: 300,
           }}
-          prefix={<SearchOutlined />} 
+          prefix={<SearchOutlined />}
         />
       </Col>
       <MapContainer center={mapCenter} zoom={11} style={{ height: '600px', width: '100%' }}>
@@ -134,8 +133,7 @@ const MapComponent = () => {
         {Object.entries(locations).map(([key, { position, description, imageUrl }]) => (
           <Marker key={key} position={position} eventHandlers={{ click: () => handleMarkerClick(key) }}>
             <Popup>
-              <img src={imageUrl} alt={description} style={{ width: '150px', height: 'auto' }} />
-              <p>{description}</p>
+              <Image src={imageUrl} alt={description} style={{ width: '150px', height: '100px' }} />
             </Popup>
           </Marker>
         ))}
