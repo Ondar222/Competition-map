@@ -45,13 +45,13 @@ const ModalComponent = ({ activeLocation, isModalVisible, handleModalClose }) =>
           <h3>{selectedLocation.name}</h3>
           <Carousel arrows infinite={false}>
             <div>
-              <Image src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+              <Image preview={false} src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
             </div>
             <div>
-              <Image src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+              <Image  preview={false} src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
             </div>
             <div>
-              <Image src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
+              <Image  preview={false} src={selectedLocation.imageUrl} alt="Location" style={{ width: '100%', height: 'auto' }} />
             </div>
           </Carousel>
           <p>{selectedLocation.description}</p>
