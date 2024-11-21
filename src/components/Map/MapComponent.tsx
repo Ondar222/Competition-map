@@ -109,22 +109,14 @@ const MapComponent = () => {
 
   return (
     <div>
-      <Col span={6} style={{ float: 'right' }}>
-        <Input
-          placeholder="Поиск по названию места..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onPressEnter={handleSearch}
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            zIndex: 1000,
-            width: 300,
-          }}
-          prefix={<SearchOutlined />}
-        />
-      </Col>
+  <Input
+        placeholder="Поиск по названию места..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onPressEnter={handleSearch}
+        style={{ position: 'absolute', top: 10, right: 50, zIndex: 1000, width: 300 }}
+        prefix={<SearchOutlined />}
+      />
       <MapContainer center={mapCenter} zoom={9} style={{ height: '600px', width: '100%' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -160,13 +152,12 @@ const MapComponent = () => {
         >
           <AimOutlined />
         </Button>
-      </MapContainer>
-
       <ModalComponent
         activeLocation={activeLocation}
         isModalVisible={isModalVisible}
         handleModalClose={handleModalClose}
       />
+      </MapContainer>
     </div>
   );
 };
