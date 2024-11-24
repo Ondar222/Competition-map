@@ -114,7 +114,7 @@ const MapComponent = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onPressEnter={handleSearch}
-        style={{ position: 'absolute', top: 10, right: 50, zIndex: 1000, width: 300 }}
+        style={{ position: 'absolute', top: 20, right: 50, zIndex: 1000, width: 300 }}
         prefix={<SearchOutlined />}
       />
       <MapContainer center={mapCenter} zoom={9} style={{ height: '600px', width: '100%' }}>

@@ -10,8 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.1",
     "@types/react-leaflet": "^2.8.3",
-    "antd": "^5.21.6",
+    "antd": "^5.22.2",
     "framer-motion": "^11.11.11",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
